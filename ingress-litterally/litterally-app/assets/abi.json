@@ -1,5 +1,85 @@
 [
   {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "recyType",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "timestamp",
+        "type": "string"
+      }
+    ],
+    "name": "addingNewWasteBag",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "add",
+        "type": "address"
+      }
+    ],
+    "name": "addNewUser",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "newStatus",
+        "type": "bool"
+      },
+      {
+        "internalType": "int256",
+        "name": "amount",
+        "type": "int256"
+      }
+    ],
+    "name": "authorizeRequest",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "location",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeState",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -32,6 +112,26 @@
     "type": "event"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "add",
+        "type": "address"
+      },
+      {
+        "internalType": "int256",
+        "name": "val",
+        "type": "int256"
+      }
+    ],
+    "name": "withdrawBalance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -58,86 +158,6 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "add",
-        "type": "address"
-      }
-    ],
-    "name": "addNewUser",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "weight",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "recyType",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "timestamp",
-        "type": "string"
-      }
-    ],
-    "name": "addingNewWasteBag",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "newStatus",
-        "type": "bool"
-      },
-      {
-        "internalType": "int256",
-        "name": "amount",
-        "type": "int256"
-      }
-    ],
-    "name": "authorizeRequest",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "add",
-        "type": "address"
-      },
-      {
-        "internalType": "int256",
-        "name": "val",
-        "type": "int256"
-      }
-    ],
-    "name": "depositBalance",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -160,12 +180,124 @@
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "add",
+        "type": "address"
+      }
+    ],
+    "name": "getMyWasteBagDetails",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "lastFIlled",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "array",
+            "type": "uint256[]"
+          }
+        ],
+        "internalType": "struct Wastemanagement.UserWasteBag",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "s",
+        "type": "string"
+      }
+    ],
+    "name": "getWasteBagDetails",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "useradd",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "weight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "recyType",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "status",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "verified",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "location",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Wastemanagement.Wastebag",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "lastAuthorized",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userWasteBag",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "lastFIlled",
         "type": "uint256"
       }
     ],
@@ -228,6 +360,11 @@
         "internalType": "bool",
         "name": "verified",
         "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "location",
+        "type": "string"
       }
     ],
     "payable": false,

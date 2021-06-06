@@ -6,8 +6,6 @@ import 'package:http/http.dart'; //You can also import the browser version
 import 'package:web3dart/web3dart.dart';
 import 'package:intl/intl.dart';
 
-import 'scanpage.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   Client httpClient;
   Web3Client ethClient;
   final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0xfB67C55FDEbdEC04727eCA0C384331F3A3e37223";
+  String contractAddress = "0x3ead4deb18b0f649fea07C8A699Fc78740e17CD9";
   String myPrivateKey =
       'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
   String url = "HTTP://127.0.0.1:8545";
@@ -58,30 +56,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  Future<String> submit(String functionName, List<dynamic> args) async {
-    EthPrivateKey credentials = EthPrivateKey.fromHex(myPrivateKey);
-    DeployedContract contract = await loadContract();
-    final ethFunction = contract.function(functionName);
-    final result = await ethClient.sendTransaction(
-        credentials,
-        Transaction.callContract(
-            contract: contract, function: ethFunction, parameters: args));
-  }
-
-  Future<void> depositBalance() async {
-    BigInt num = BigInt.from(20);
-    var response = await submit(
-        "depositBalance", [EthereumAddress.fromHex(myAddress), num]);
-    return response;
-  }
-
-  Future<void> addingNewWasteBag(
-      BigInt weight, String type, String date) async {
-    var response = await submit("addingNewWasteBag", [weight, type, date]);
-    return response;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -112,6 +86,23 @@ class _HomePageState extends State<HomePage> {
                         'Hello Jerry!',
                         style: TextStyle(
                             fontSize: 30,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(7.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Address(User):${myAddress}",
+                        style: TextStyle(
+                            fontSize: 20,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
@@ -169,28 +160,29 @@ class _HomePageState extends State<HomePage> {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
                         ),
-                        child: Text('Refresh'),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.refresh),
+                            Text('Refresh'),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 5,
-                    ),
-                    Container(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.amber),
-                        ),
-                        child: Text('My Account Details'),
-                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Container(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/history',
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -203,7 +195,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => getBalance(myAddress),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/redeem',
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -213,48 +210,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            TextField(
-                              controller: _weight,
-                              decoration: InputDecoration(
-                                hintText: 'Weight',
-                                filled: true,
-                                isDense: true,
-                              ),
-                              autocorrect: false,
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            TextField(
-                              controller: _type,
-                              decoration: InputDecoration(
-                                hintText: 'Type',
-                                filled: true,
-                                isDense: true,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            ElevatedButton(
-                                child: Text('Add new bag'),
-                                onPressed: () {
-                                  String now = DateFormat("yyyy-MM-dd hh:mm:ss")
-                                      .format(DateTime.now());
-                                  print(now);
-                                  addingNewWasteBag(BigInt.parse(_weight.text),
-                                      _type.text, now);
-                                }),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),

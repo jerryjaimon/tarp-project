@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   Client httpClient;
   Web3Client ethClient;
   final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0xfB67C55FDEbdEC04727eCA0C384331F3A3e37223";
+  String contractAddress = "0xa66653f74f411dB23a7c3CAF60E823D6Be070293";
   String myPrivateKey =
       'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
   String url = "HTTP://127.0.0.1:8545";
@@ -58,11 +58,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  Future<void> wasteBinStatistics(BigInt id) async {
+  Future<void> wasteBinStatistics() async {
+    String id = '0';
     print(id);
-    List<dynamic> result = await query("wastebags", [BigInt.from(1)]);
-    littycoin = result[0];
-    print(littycoin);
+    List<dynamic> result = await query("getWasteBagDetails", [id]);
+    print(result);
     setState(() {});
   }
 
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => wasteBinStatistics(BigInt.parse('1')),
+                        onPressed: () => wasteBinStatistics(),
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
