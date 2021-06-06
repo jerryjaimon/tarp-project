@@ -115,11 +115,6 @@
     "constant": false,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "add",
-        "type": "address"
-      },
-      {
         "internalType": "int256",
         "name": "val",
         "type": "int256"
@@ -172,6 +167,39 @@
         "internalType": "int256",
         "name": "",
         "type": "int256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "add",
+        "type": "address"
+      }
+    ],
+    "name": "getMyWasteBagDetails",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "lastFIlled",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "array",
+            "type": "uint256[]"
+          }
+        ],
+        "internalType": "struct Wastemanagement.UserWasteBag",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "payable": false,

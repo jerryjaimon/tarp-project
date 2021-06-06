@@ -17,10 +17,10 @@ class _HomePageState extends State<HomePage> {
   BigInt littycoin;
   Client httpClient;
   Web3Client ethClient;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0xa66653f74f411dB23a7c3CAF60E823D6Be070293";
+  final myAddress = "0x078cbdf050B2955C6d89dA9F2B5FF8CC80FaE608";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '09f8ae4b55b7b7b81abe920595bed1c145edab0ad573ccd56846a621c1f42ca5';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _status = TextEditingController();
   TextEditingController _amount = TextEditingController();
@@ -109,9 +109,26 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                       ),
                       Text(
-                        'Hello Admin!',
+                        'Hello Jerry!',
                         style: TextStyle(
                             fontSize: 30,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(7.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Address(User):\n${myAddress}",
+                        style: TextStyle(
+                            fontSize: 15,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
@@ -129,81 +146,44 @@ class _HomePageState extends State<HomePage> {
           Container(
             child: Column(
               children: [
-                Column(
-                  children: [
-                    Container(
-                      child: ElevatedButton(
-                        onPressed: () => wasteBinStatistics(),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.amber),
-                        ),
-                        child: Text('Get WasteBin details'),
-                      ),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/authorize',
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.amber),
                     ),
-                    SizedBox(
-                      height: 5,
+                    child: Text('Authorize Request'),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/modify',
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.amber),
                     ),
-                    Container(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.amber),
-                        ),
-                        child: Text('Change Transit Details'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            TextField(
-                              controller: _status,
-                              decoration: InputDecoration(
-                                hintText: 'Status',
-                                filled: true,
-                                isDense: true,
-                              ),
-                              autocorrect: false,
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            TextField(
-                              controller: _amount,
-                              decoration: InputDecoration(
-                                hintText: 'Amount',
-                                filled: true,
-                                isDense: true,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            ElevatedButton(
-                                child: Text('Authorize Request'),
-                                onPressed: () {
-                                  String now = DateFormat("yyyy-MM-dd hh:mm:ss")
-                                      .format(DateTime.now());
-                                  print(now);
-                                  authorizeRequest(
-                                      _status.text.toLowerCase() == 'true',
-                                      BigInt.parse(_amount.text));
-                                }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    child: Text('Modify Wastebag location'),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
@@ -211,24 +191,5 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     ));
-  }
-
-  Widget flatButton(String text, Widget widget) {
-    return FlatButton(
-      padding: EdgeInsets.all(15.0),
-      onPressed: () async {
-        String codeSanner = await BarcodeScanner.scan(); //barcode scnner
-        setState(() {
-          littycoin += BigInt.parse(codeSanner);
-        });
-      },
-      child: Text(
-        text,
-        style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-      ),
-      shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.green, width: 3.0),
-          borderRadius: BorderRadius.circular(20.0)),
-    );
   }
 }

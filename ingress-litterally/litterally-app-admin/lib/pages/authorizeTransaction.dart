@@ -18,10 +18,10 @@ class _authorizeTransactionState extends State<authorizeTransaction> {
   Web3Client ethClient;
   List<dynamic> allWasteBags = List();
   int wasteBagLength = 0;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0xa66653f74f411dB23a7c3CAF60E823D6Be070293";
+  final myAddress = "0x078cbdf050B2955C6d89dA9F2B5FF8CC80FaE608";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '09f8ae4b55b7b7b81abe920595bed1c145edab0ad573ccd56846a621c1f42ca5';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _status = TextEditingController();
   TextEditingController _amount = TextEditingController();
@@ -126,9 +126,14 @@ class _authorizeTransactionState extends State<authorizeTransaction> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.menu,
-                        color: Colors.white,
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         'Authorize Requests',
@@ -155,7 +160,24 @@ class _authorizeTransactionState extends State<authorizeTransaction> {
                   children: [
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => lastAuth(),
+                        onPressed: () {
+                          lastAuth();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Refreshed'),
+                              duration: const Duration(milliseconds: 1500),
+                              width: 280.0, // Width of the SnackBar.
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    8.0, // Inner padding for SnackBar content.
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -259,6 +281,30 @@ class _authorizeTransactionState extends State<authorizeTransaction> {
                                                 print(val);
                                                 authorizeRequest(status[index],
                                                     BigInt.from(val));
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text('Approved'),
+                                                    duration: const Duration(
+                                                        milliseconds: 1500),
+                                                    width:
+                                                        280.0, // Width of the SnackBar.
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal:
+                                                          8.0, // Inner padding for SnackBar content.
+                                                    ),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                    ),
+                                                  ),
+                                                );
+                                                lastAuth();
                                               },
                                               child: Text('Approve'),
                                             ),

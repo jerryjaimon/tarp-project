@@ -115,11 +115,6 @@
     "constant": false,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "add",
-        "type": "address"
-      },
-      {
         "internalType": "int256",
         "name": "val",
         "type": "int256"

@@ -17,7 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: authorizeTransaction(),
+      routes: {
+        '/': (context) => HomePage(),
+        '/modify': (context) => modifyState(),
+        '/authorize': (context) => authorizeTransaction(),
+      },
     );
   }
 }

@@ -18,14 +18,15 @@ class _addNewWasteBagState extends State<addNewWasteBag> {
   Web3Client ethClient;
   List<dynamic> allWasteBags = List();
   int wasteBagLength = 0;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0x3ead4deb18b0f649fea07C8A699Fc78740e17CD9";
+  final myAddress = "0x434A5bB1Ba4051bf9D550186234C2891e9A18Db4";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '76808404181e10b15e36b3d483cd81702c443b771746160765324af351edd6dd';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _weight = TextEditingController();
   TextEditingController _type = TextEditingController();
   List<String> status = List();
+  String funcstate = "Error";
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _addNewWasteBagState extends State<addNewWasteBag> {
 
   Future<void> addingNewWasteBag(
       BigInt weight, String type, String date) async {
+    funcstate = "Added New Bag";
     var response = await submit("addingNewWasteBag", [weight, type, date]);
     return response;
   }
@@ -146,6 +148,9 @@ class _addNewWasteBagState extends State<addNewWasteBag> {
                     height: 16,
                   ),
                   ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber)),
                       child: Text('Add new bag'),
                       onPressed: () {
                         String now = DateFormat("yyyy-MM-dd hh:mm:ss")
@@ -153,6 +158,21 @@ class _addNewWasteBagState extends State<addNewWasteBag> {
                         print(now);
                         addingNewWasteBag(
                             BigInt.parse(_weight.text), _type.text, now);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${funcstate}'),
+                            duration: const Duration(milliseconds: 1500),
+                            width: 280.0, // Width of the SnackBar.
+                            padding: const EdgeInsets.symmetric(
+                              horizontal:
+                                  8.0, // Inner padding for SnackBar content.
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        );
                       }),
                 ],
               ),

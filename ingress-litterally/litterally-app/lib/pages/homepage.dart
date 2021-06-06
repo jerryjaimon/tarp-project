@@ -4,7 +4,6 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart'; //You can also import the browser version
 import 'package:web3dart/web3dart.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,10 +14,10 @@ class _HomePageState extends State<HomePage> {
   BigInt littycoin;
   Client httpClient;
   Web3Client ethClient;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0x3ead4deb18b0f649fea07C8A699Fc78740e17CD9";
+  final myAddress = "0x434A5bB1Ba4051bf9D550186234C2891e9A18Db4";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '76808404181e10b15e36b3d483cd81702c443b771746160765324af351edd6dd';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _weight = TextEditingController();
   TextEditingController _type = TextEditingController();
@@ -83,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                       ),
                       Text(
-                        'Hello Jerry!',
+                        'Hello Allen!',
                         style: TextStyle(
                             fontSize: 30,
                             fontFamily: 'Montserrat',
@@ -100,9 +99,9 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "Address(User):${myAddress}",
+                        "Address(User):\n${myAddress}",
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
@@ -155,7 +154,24 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => getBalance(myAddress),
+                        onPressed: () {
+                          getBalance(myAddress);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Refreshed'),
+                              duration: const Duration(milliseconds: 1500),
+                              width: 280.0, // Width of the SnackBar.
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    8.0, // Inner padding for SnackBar content.
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -210,6 +226,21 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(
                       height: 10,
+                    ),
+                    Container(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/addnew',
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber),
+                        ),
+                        child: Text('Add new waste bag'),
+                      ),
                     ),
                   ],
                 ),

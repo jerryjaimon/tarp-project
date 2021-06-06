@@ -17,10 +17,10 @@ class _viewMyWasteBagsState extends State<viewMyWasteBags> {
   Web3Client ethClient;
   List<dynamic> allWasteBags = List();
   int wasteBagLength = 0;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0x3ead4deb18b0f649fea07C8A699Fc78740e17CD9";
+  final myAddress = "0x434A5bB1Ba4051bf9D550186234C2891e9A18Db4";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '76808404181e10b15e36b3d483cd81702c443b771746160765324af351edd6dd';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _status = TextEditingController();
   TextEditingController _amount = TextEditingController();
@@ -160,7 +160,24 @@ class _viewMyWasteBagsState extends State<viewMyWasteBags> {
                   children: [
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => myWasteBags(),
+                        onPressed: () {
+                          myWasteBags();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Refreshed'),
+                              duration: const Duration(milliseconds: 1500),
+                              width: 280.0, // Width of the SnackBar.
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    8.0, // Inner padding for SnackBar content.
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -214,7 +231,8 @@ class _viewMyWasteBagsState extends State<viewMyWasteBags> {
                                             Container(
                                               child: Text(
                                                   "Type:${allWasteBags[index][0][2].toString()}"),
-                                            ), /*
+                                            ),
+                                            /*
                                             Container(
                                               child: Text(
                                                   "Date:${allWasteBags[index][0][3].toString()}"),
@@ -226,11 +244,11 @@ class _viewMyWasteBagsState extends State<viewMyWasteBags> {
                                             Container(
                                               child: Text(
                                                   "Verified:${allWasteBags[index][0][5].toString()}"),
-                                            ),
+                                            ),*/
                                             Container(
                                               child: Text(
                                                   "Status:${allWasteBags[index][0][6].toString()}"),
-                                            ),*/
+                                            ),
                                           ],
                                         )
                                       ],

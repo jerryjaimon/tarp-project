@@ -5,34 +5,33 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart'; //You can also import the browser version
 import 'package:web3dart/web3dart.dart';
 
-class modifyStatus extends StatefulWidget {
-  const modifyStatus({Key key}) : super(key: key);
+class modifyState extends StatefulWidget {
+  const modifyState({Key key}) : super(key: key);
 
   @override
-  _modifyStatusState createState() => _modifyStatusState();
+  _modifyStateState createState() => _modifyStateState();
 }
 
-class _modifyStatusState extends State<modifyStatus> {
+class _modifyStateState extends State<modifyState> {
   BigInt littycoin;
   Client httpClient;
   Web3Client ethClient;
   List<dynamic> allWasteBags = List();
   int wasteBagLength = 0;
-  final myAddress = "0x31E6FDd1DD504DC8dd269230E9040448Ff48a456";
-  String contractAddress = "0xa66653f74f411dB23a7c3CAF60E823D6Be070293";
+  final myAddress = "0x078cbdf050B2955C6d89dA9F2B5FF8CC80FaE608";
+  String contractAddress = "0x080E159b4D104a60ef22c10FB0cd4b87dE1a4F07";
   String myPrivateKey =
-      'f32aec6d0ca33513350665ffbede1139880052157760276f781391ed2f40422f';
+      '09f8ae4b55b7b7b81abe920595bed1c145edab0ad573ccd56846a621c1f42ca5';
   String url = "HTTP://127.0.0.1:8545";
   TextEditingController _status = TextEditingController();
-  TextEditingController _amount = TextEditingController();
-  List<String> status = List();
-
+  List<BigInt> bagIndex = List();
+  String funcstate = "Error";
   @override
   void initState() {
     super.initState();
     httpClient = Client();
     ethClient = Web3Client(url, httpClient);
-    wasteBinStatistics();
+    lastAuth();
   }
 
   Future<DeployedContract> loadContract() async {
@@ -61,25 +60,50 @@ class _modifyStatusState extends State<modifyStatus> {
             contract: contract, function: ethFunction, parameters: args));
   }
 
-  Future<void> wasteBinStatistics() async {
+  Future<void> lastAuth() async {
+    allWasteBags.clear();
     List<dynamic> currentWasteBinIdreq = await query("wasteBagId", []);
     BigInt currentWasteBinId = currentWasteBinIdreq[0] - BigInt.one;
+    print(currentWasteBinId);
     for (BigInt i = currentWasteBinId; i >= BigInt.zero; i = i - BigInt.one) {
-      print(i);
+      print("Running");
       String id = i.toString();
       List<dynamic> result = await query("getWasteBagDetails", [id]);
+      print(result);
+      if (result[0][6].toString().toLowerCase() == 'recycled') continue;
+      if (result[0][4].toString().toLowerCase() == 'false') continue;
+      if (result[0][5].toString().toLowerCase() == 'true') {
+        if (result[0][4].toString().toLowerCase() == 'false') {
+          continue;
+        }
+      }
+      bagIndex.add(i);
       allWasteBags.add(result);
-      status.add(result[0][6]);
     }
+    print(allWasteBags);
     wasteBagLength = allWasteBags.length;
-    print(status);
+    funcstate = "Modified";
     setState(() {});
   }
 
-  Future<void> modifyStatus(bool status, BigInt amt) async {
+  Future<void> modifyStatus(String status, BigInt id) async {
     print("working");
-    var response = await submit("changeState", [status, amt]);
+    var response = await submit("changeState", [status, id]);
     return response;
+  }
+
+  int calculateValue(String str, int kg) {
+    int value;
+    if (str.toLowerCase() == 'glass') {
+      value = 20 * kg;
+    }
+    if (str.toLowerCase() == 'plastic') {
+      value = 10 * kg;
+    }
+    if (str.toLowerCase() == 'metal') {
+      value = 50 * kg;
+    }
+    return value;
   }
 
   @override
@@ -105,12 +129,17 @@ class _modifyStatusState extends State<modifyStatus> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.menu,
-                        color: Colors.white,
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
-                        'Modify Status',
+                        'Modify Requests',
                         style: TextStyle(
                             fontSize: 30,
                             fontFamily: 'Montserrat',
@@ -134,7 +163,24 @@ class _modifyStatusState extends State<modifyStatus> {
                   children: [
                     Container(
                       child: ElevatedButton(
-                        onPressed: () => wasteBinStatistics(),
+                        onPressed: () {
+                          lastAuth();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Refreshed'),
+                              duration: const Duration(milliseconds: 1500),
+                              width: 280.0, // Width of the SnackBar.
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    8.0, // Inner padding for SnackBar content.
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.amber),
@@ -213,42 +259,51 @@ class _modifyStatusState extends State<modifyStatus> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text('Status:'),
-                                          DropdownButton<String>(
-                                            value: status[index],
-                                            icon: const Icon(
-                                                Icons.arrow_downward),
-                                            iconSize: 24,
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.deepPurple),
-                                            underline: Container(
-                                              height: 2,
-                                              color: Colors.deepPurpleAccent,
+                                          Text('Current Status:'),
+                                          Expanded(
+                                            child: TextField(
+                                              controller: _status,
+                                              decoration: InputDecoration(
+                                                hintText: 'Status',
+                                                filled: true,
+                                                isDense: true,
+                                              ),
+                                              autocorrect: false,
                                             ),
-                                            onChanged: (String newValue) {
-                                              setState(() {
-                                                status[index] = newValue;
-                                                print(status[index]);
-                                              });
-                                            },
-                                            items: <String>[
-                                              'To be picked',
-                                              'Picked Up',
-                                              'Recycled',
-                                              'Not Recycled'
-                                            ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
                                           ),
                                           Column(children: [
                                             ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text('Change Status'),
+                                              onPressed: () {
+                                                print(bagIndex[index]);
+                                                modifyStatus(
+                                                  _status.text,
+                                                  bagIndex[index],
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text('Modified'),
+                                                    duration: const Duration(
+                                                        milliseconds: 1500),
+                                                    width:
+                                                        280.0, // Width of the SnackBar.
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal:
+                                                          8.0, // Inner padding for SnackBar content.
+                                                    ),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Modify'),
                                             ),
                                           ])
                                         ]),
