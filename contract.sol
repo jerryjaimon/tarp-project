@@ -27,7 +27,6 @@ contract Wastemanagement {
         User memory newuser = User(1,100);
         UserWasteBag memory link = UserWasteBag(0,new uint256[](365));
         userWasteBag[add] = link;
-
         account[add] = newuser;
         
     }
@@ -121,3 +120,4 @@ contract Wastemanagement {
     }
 
 }
+

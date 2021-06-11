@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                       ),
                       Text(
-                        'Hello Allen!',
+                        'Hello User!',
                         style: TextStyle(
                             fontSize: 30,
                             fontFamily: 'Montserrat',
